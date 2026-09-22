@@ -64,7 +64,7 @@ class _TasksPageWidgetState extends State<TasksPageWidget> {
           backgroundColor: FlutterFlowTheme.of(context).primary,
           automaticallyImplyLeading: false,
           title: Text(
-            'My Tasks',
+            'My Tasks 📝',
             style: FlutterFlowTheme.of(context).headlineMedium.override(
                   font: GoogleFonts.interTight(
                     fontWeight:
