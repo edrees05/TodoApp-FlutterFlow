@@ -57,24 +57,6 @@ class _AuthPageWidgetState extends State<AuthPageWidget> {
         appBar: AppBar(
           backgroundColor: FlutterFlowTheme.of(context).primary,
           automaticallyImplyLeading: false,
-          title: Text(
-            'Edrees\' Tasks',
-            style: FlutterFlowTheme.of(context).headlineMedium.override(
-                  font: GoogleFonts.interTight(
-                    fontWeight:
-                        FlutterFlowTheme.of(context).headlineMedium.fontWeight,
-                    fontStyle:
-                        FlutterFlowTheme.of(context).headlineMedium.fontStyle,
-                  ),
-                  color: Colors.white,
-                  fontSize: 22.0,
-                  letterSpacing: 0.0,
-                  fontWeight:
-                      FlutterFlowTheme.of(context).headlineMedium.fontWeight,
-                  fontStyle:
-                      FlutterFlowTheme.of(context).headlineMedium.fontStyle,
-                ),
-          ),
           actions: [],
           centerTitle: false,
           elevation: 2.0,
@@ -375,6 +357,15 @@ class _AuthPageWidgetState extends State<AuthPageWidget> {
                       ),
                   elevation: 0.0,
                   borderRadius: BorderRadius.circular(8.0),
+                ),
+              ),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8.0),
+                child: Image.asset(
+                  'assets/images/EdreesTasks-Logo.png',
+                  width: 200.0,
+                  height: 200.0,
+                  fit: BoxFit.cover,
                 ),
               ),
             ],
