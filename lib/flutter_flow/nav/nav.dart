@@ -90,11 +90,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) => AuthPageWidget(),
         ),
         FFRoute(
-          name: TasksPageWidget.routeName,
-          path: TasksPageWidget.routePath,
-          builder: (context, params) => TasksPageWidget(),
-        ),
-        FFRoute(
           name: AddTaskPageWidget.routeName,
           path: AddTaskPageWidget.routePath,
           builder: (context, params) => AddTaskPageWidget(),
@@ -103,6 +98,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: ProfilePageWidget.routeName,
           path: ProfilePageWidget.routePath,
           builder: (context, params) => ProfilePageWidget(),
+        ),
+        FFRoute(
+          name: TasksPageWidget.routeName,
+          path: TasksPageWidget.routePath,
+          builder: (context, params) => TasksPageWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );
@@ -314,6 +314,10 @@ class FFRoute {
                     duration: transitionInfo.duration,
                     reverseDuration: transitionInfo.duration,
                     alignment: transitionInfo.alignment,
+                    curve: transitionInfo.transitionType ==
+                            PageTransitionType.scale
+                        ? const Interval(0.0, 0.5)
+                        : Curves.linear,
                     child: child,
                   ).buildTransitions(
                     context,
