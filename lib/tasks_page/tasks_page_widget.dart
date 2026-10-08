@@ -1,4 +1,5 @@
 import '/auth/firebase_auth/auth_util.dart';
+import '/backend/api_requests/api_calls.dart';
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -87,135 +88,202 @@ class _TasksPageWidgetState extends State<TasksPageWidget> {
         ),
         body: SafeArea(
           top: true,
-          child: StreamBuilder<List<TasksRecord>>(
-            stream: queryTasksRecord(
-              queryBuilder: (tasksRecord) => tasksRecord.where(
-                'user',
-                isEqualTo: currentUserReference,
-              ),
-            ),
-            builder: (context, snapshot) {
-              // Customize what your widget looks like when it's loading.
-              if (!snapshot.hasData) {
-                return Center(
-                  child: SizedBox(
-                    width: 50.0,
-                    height: 50.0,
-                    child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                        FlutterFlowTheme.of(context).primary,
-                      ),
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Expanded(
+                child: StreamBuilder<List<TasksRecord>>(
+                  stream: queryTasksRecord(
+                    queryBuilder: (tasksRecord) => tasksRecord.where(
+                      'user',
+                      isEqualTo: currentUserReference,
                     ),
                   ),
-                );
-              }
-              List<TasksRecord> columnTasksRecordList = snapshot.data!;
-
-              return Column(
-                mainAxisSize: MainAxisSize.max,
-                children:
-                    List.generate(columnTasksRecordList.length, (columnIndex) {
-                  final columnTasksRecord = columnTasksRecordList[columnIndex];
-                  return ListView(
-                    padding: EdgeInsets.zero,
-                    shrinkWrap: true,
-                    scrollDirection: Axis.vertical,
-                    children: [
-                      Material(
-                        color: Colors.transparent,
-                        child: Theme(
-                          data: ThemeData(
-                            checkboxTheme: CheckboxThemeData(
-                              visualDensity: VisualDensity.compact,
-                              materialTapTargetSize:
-                                  MaterialTapTargetSize.shrinkWrap,
-                            ),
-                            unselectedWidgetColor:
-                                FlutterFlowTheme.of(context).alternate,
-                          ),
-                          child: CheckboxListTile(
-                            value: _model.checkboxListTileValueMap[
-                                    columnTasksRecord] ??=
-                                columnTasksRecord.completed,
-                            onChanged: (newValue) async {
-                              safeSetState(() =>
-                                  _model.checkboxListTileValueMap[
-                                      columnTasksRecord] = newValue!);
-                              if (newValue!) {
-                                await columnTasksRecord.reference
-                                    .update(createTasksRecordData(
-                                  completed: true,
-                                ));
-                              } else {
-                                await columnTasksRecord.reference
-                                    .update(createTasksRecordData(
-                                  completed: false,
-                                ));
-                              }
-                            },
-                            title: Text(
-                              columnTasksRecord.title,
-                              style: FlutterFlowTheme.of(context)
-                                  .titleLarge
-                                  .override(
-                                    font: GoogleFonts.interTight(
-                                      fontWeight: FlutterFlowTheme.of(context)
-                                          .titleLarge
-                                          .fontWeight,
-                                      fontStyle: FlutterFlowTheme.of(context)
-                                          .titleLarge
-                                          .fontStyle,
-                                    ),
-                                    letterSpacing: 0.0,
-                                    fontWeight: FlutterFlowTheme.of(context)
-                                        .titleLarge
-                                        .fontWeight,
-                                    fontStyle: FlutterFlowTheme.of(context)
-                                        .titleLarge
-                                        .fontStyle,
-                                  ),
-                            ),
-                            subtitle: Text(
-                              columnTasksRecord.details,
-                              style: FlutterFlowTheme.of(context)
-                                  .labelMedium
-                                  .override(
-                                    font: GoogleFonts.inter(
-                                      fontWeight: FlutterFlowTheme.of(context)
-                                          .labelMedium
-                                          .fontWeight,
-                                      fontStyle: FlutterFlowTheme.of(context)
-                                          .labelMedium
-                                          .fontStyle,
-                                    ),
-                                    letterSpacing: 0.0,
-                                    fontWeight: FlutterFlowTheme.of(context)
-                                        .labelMedium
-                                        .fontWeight,
-                                    fontStyle: FlutterFlowTheme.of(context)
-                                        .labelMedium
-                                        .fontStyle,
-                                  ),
-                            ),
-                            tileColor: FlutterFlowTheme.of(context)
-                                .secondaryBackground,
-                            activeColor: FlutterFlowTheme.of(context).primary,
-                            checkColor: FlutterFlowTheme.of(context).info,
-                            dense: false,
-                            controlAffinity: ListTileControlAffinity.trailing,
-                            contentPadding: EdgeInsetsDirectional.fromSTEB(
-                                12.0, 0.0, 12.0, 0.0),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.0),
+                  builder: (context, snapshot) {
+                    // Customize what your widget looks like when it's loading.
+                    if (!snapshot.hasData) {
+                      return Center(
+                        child: SizedBox(
+                          width: 50.0,
+                          height: 50.0,
+                          child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              FlutterFlowTheme.of(context).primary,
                             ),
                           ),
                         ),
-                      ),
-                    ],
-                  );
-                }),
-              );
-            },
+                      );
+                    }
+                    List<TasksRecord> columnTasksRecordList = snapshot.data!;
+
+                    return Column(
+                      mainAxisSize: MainAxisSize.max,
+                      children: List.generate(columnTasksRecordList.length,
+                          (columnIndex) {
+                        final columnTasksRecord =
+                            columnTasksRecordList[columnIndex];
+                        return ListView(
+                          padding: EdgeInsets.zero,
+                          shrinkWrap: true,
+                          scrollDirection: Axis.vertical,
+                          children: [
+                            Material(
+                              color: Colors.transparent,
+                              child: Theme(
+                                data: ThemeData(
+                                  checkboxTheme: CheckboxThemeData(
+                                    visualDensity: VisualDensity.compact,
+                                    materialTapTargetSize:
+                                        MaterialTapTargetSize.shrinkWrap,
+                                  ),
+                                  unselectedWidgetColor:
+                                      FlutterFlowTheme.of(context).alternate,
+                                ),
+                                child: CheckboxListTile(
+                                  value: _model.checkboxListTileValueMap[
+                                          columnTasksRecord] ??=
+                                      columnTasksRecord.completed,
+                                  onChanged: (newValue) async {
+                                    safeSetState(() =>
+                                        _model.checkboxListTileValueMap[
+                                            columnTasksRecord] = newValue!);
+                                    if (newValue!) {
+                                      await columnTasksRecord.reference
+                                          .update(createTasksRecordData(
+                                        completed: true,
+                                      ));
+                                    } else {
+                                      await columnTasksRecord.reference
+                                          .update(createTasksRecordData(
+                                        completed: false,
+                                      ));
+                                    }
+                                  },
+                                  title: Text(
+                                    columnTasksRecord.title,
+                                    style: FlutterFlowTheme.of(context)
+                                        .titleLarge
+                                        .override(
+                                          font: GoogleFonts.interTight(
+                                            fontWeight:
+                                                FlutterFlowTheme.of(context)
+                                                    .titleLarge
+                                                    .fontWeight,
+                                            fontStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .titleLarge
+                                                    .fontStyle,
+                                          ),
+                                          letterSpacing: 0.0,
+                                          fontWeight:
+                                              FlutterFlowTheme.of(context)
+                                                  .titleLarge
+                                                  .fontWeight,
+                                          fontStyle:
+                                              FlutterFlowTheme.of(context)
+                                                  .titleLarge
+                                                  .fontStyle,
+                                        ),
+                                  ),
+                                  subtitle: Text(
+                                    columnTasksRecord.details,
+                                    style: FlutterFlowTheme.of(context)
+                                        .labelMedium
+                                        .override(
+                                          font: GoogleFonts.inter(
+                                            fontWeight:
+                                                FlutterFlowTheme.of(context)
+                                                    .labelMedium
+                                                    .fontWeight,
+                                            fontStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .labelMedium
+                                                    .fontStyle,
+                                          ),
+                                          letterSpacing: 0.0,
+                                          fontWeight:
+                                              FlutterFlowTheme.of(context)
+                                                  .labelMedium
+                                                  .fontWeight,
+                                          fontStyle:
+                                              FlutterFlowTheme.of(context)
+                                                  .labelMedium
+                                                  .fontStyle,
+                                        ),
+                                  ),
+                                  tileColor: FlutterFlowTheme.of(context)
+                                      .secondaryBackground,
+                                  activeColor:
+                                      FlutterFlowTheme.of(context).primary,
+                                  checkColor: FlutterFlowTheme.of(context).info,
+                                  dense: false,
+                                  controlAffinity:
+                                      ListTileControlAffinity.trailing,
+                                  contentPadding:
+                                      EdgeInsetsDirectional.fromSTEB(
+                                          12.0, 0.0, 12.0, 0.0),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      }),
+                    );
+                  },
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(16.0),
+                child: FutureBuilder<ApiCallResponse>(
+                  future: GetQuoteCall.call(),
+                  builder: (context, snapshot) {
+                    // Customize what your widget looks like when it's loading.
+                    if (!snapshot.hasData) {
+                      return Center(
+                        child: SizedBox(
+                          width: 50.0,
+                          height: 50.0,
+                          child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              FlutterFlowTheme.of(context).primary,
+                            ),
+                          ),
+                        ),
+                      );
+                    }
+                    final textGetQuoteResponse = snapshot.data!;
+
+                    return Text(
+                      '${GetQuoteCall.quote(
+                        textGetQuoteResponse.jsonBody,
+                      )} - ${GetQuoteCall.author(
+                        textGetQuoteResponse.jsonBody,
+                      )}',
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                            font: GoogleFonts.inter(
+                              fontWeight: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .fontWeight,
+                              fontStyle: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .fontStyle,
+                            ),
+                            letterSpacing: 0.0,
+                            fontWeight: FlutterFlowTheme.of(context)
+                                .bodyMedium
+                                .fontWeight,
+                            fontStyle: FlutterFlowTheme.of(context)
+                                .bodyMedium
+                                .fontStyle,
+                          ),
+                    );
+                  },
+                ),
+              ),
+            ],
           ),
         ),
       ),
